@@ -1,0 +1,51 @@
+{% extends "usuarios/padre.html" %}
+{% load static %}
+
+{% block titulo %}
+Resultados de búsqueda
+{% endblock %}
+
+
+{% block primero %}
+    
+{% if titulos %}
+    <ul>
+        {% for ti in titulos %}
+
+        <article>
+            <!-- Post header-->
+            <header class="mb-4">
+                <!-- Post title-->
+                <h1 class="fw-bolder mb-1"><br><b>{{ti.titulo}}&nbsp&nbsp&nbsp</b>
+                    {% if ti.puntaje > 79 %}
+                    <a class="btn btn-success" href="{% url 'review_criteria' %}"><h6>PUNTAJE</h6><b><h1> {{ti.puntaje}}</b></h1></a>
+                    {% elif ti.puntaje <= 79 and ti.puntaje >= 60 %}
+                    <a class="btn btn-warning" href="{% url 'review_criteria' %}"><h6>PUNTAJE</h6><b><h1> {{ti.puntaje}}</b></h1></a>
+                    {% else %}
+                    <a class="btn btn-danger" href="{% url 'review_criteria' %}"><h6>PUNTAJE</h6><b><h1> {{ti.puntaje}}</b></h1></a>
+                    {% endif %}
+                </h1>
+                <h3 class="fw-bolder mb-1">{{ti.subtitulo}}</h3>
+                <!-- Post meta content-->
+                <div class="text-muted fst-italic mb-2">Creado por:
+                    <a class="badge bg-secondary text-decoration-none link-light" href="{% url 'usuario_detallado' ti.user_id %}">{{ti.user.get_full_name}}</a> el {{ti.creado.day}}/{{ti.creado.month}}/{{ti.creado.year}}
+                    {% if ti.creado != ti.actualizado %}
+                    y editado el {{ti.actualizado.day}}/{{ti.actualizado.month}}/{{ti.actualizado.year}}
+                    {% endif %}
+                </div>
+                <img height="200px" src="{{ ti.imagen.url }}" alt="">
+            </header>
+            <section class="mb-5">
+                {{ti.contenido|slice:":200"|safe}}...
+                <br>
+                <a href="{% url 'posteo_detallado' ti.id %}" class="btn btn-primary">Ver más &rarr;</a>
+            </section>
+        </article>
+
+        {% endfor %}
+    </ul>
+{% else %}
+<p>No se encontraron Reviews de ese juego.</p>
+{% endif %}
+
+{% endblock %}

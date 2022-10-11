@@ -1,0 +1,30 @@
+{% extends "usuarios/padre.html" %}
+{% load static %}
+
+
+{% block titulo %}
+Escribir Mensaje
+{% endblock %}
+
+
+{% block primero %}
+
+{% if lista_mensajes %}
+{% for mensaje in lista_mensajes %}
+
+{{mensaje.contenido}}
+
+{% endfor %}
+{% endif %}
+
+<h4>Nuevo mensaje:</h4>
+<br>
+
+<form action="{% url 'nuevo_mensaje' %}" method="POST"> {% csrf_token %}
+    <table>
+        {{ mi_formulario.as_table }}
+    </table>
+    <input type="submit" value="Enviar">
+</form>
+
+{% endblock %}

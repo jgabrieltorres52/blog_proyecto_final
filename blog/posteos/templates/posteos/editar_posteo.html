@@ -1,0 +1,24 @@
+{% extends "usuarios/padre_2.html" %}
+{% load static %}
+
+
+{% block titulo %}
+Editar Review
+{% endblock %}
+
+
+{% block primero %}
+
+<h2>Editar Review:</h2>
+
+ 
+<form action="{% url 'editar_posteo' posteo.id %}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+    <table>
+        {{ mi_formulario.media}}
+        {{ mi_formulario }}
+    </table>
+    <input type="submit" value="Enviar">
+</form>
+<br>
+
+{% endblock %}

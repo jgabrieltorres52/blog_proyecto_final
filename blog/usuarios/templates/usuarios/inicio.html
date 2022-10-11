@@ -1,0 +1,71 @@
+{% extends "usuarios/padre.html" %}
+{% load static %}
+
+{% block titulo %}
+GameRank - Inicio
+{% endblock %}
+
+
+{% block primero %}
+
+<article>
+    <!-- Post header-->
+    <header class="mb-4">
+        <!-- Post title-->
+        <h1 class="fw-bolder mb-1">Bienvenido a GameRank!!!</h1>
+        <h3 class="fw-bolder mb-1">Donde encontrarás las reviews de tus juegos favoritos!</h3>
+        <h4 class="fw-bolder mb-1">Suscríbete y postea tus propias reviews!</h4>
+        <!-- Post meta content-->
+        <div class="text-muted fst-italic mb-2">Creado por Cristian Gabriel Torres y José Gabriel Torres.</div>
+        <a class="badge bg-secondary text-decoration-none link-light" href="{% url 'acerca_de' %}">Acerca de nosotros</a>
+        <!-- Post categories-->
+    </header>
+</article>
+
+
+<h2><br>{{ mensaje }}</h2>
+
+
+{% if lista_posteos %}
+
+    {% for posteo in lista_posteos %}
+
+    <article>
+        <!-- Post header-->
+        <header class="mb-4">
+            <!-- Post title-->
+            <h1 class="fw-bolder mb-1"><br><b>{{posteo.titulo}}&nbsp&nbsp&nbsp</b>
+                {% if posteo.puntaje > 79 %}
+                <a class="btn btn-success" href="{% url 'review_criteria' %}"><h6>PUNTAJE</h6><b><h1> {{posteo.puntaje}}</b></h1></a>
+                {% elif posteo.puntaje <= 79 and posteo.puntaje >= 60 %}
+                <a class="btn btn-warning" href="{% url 'review_criteria' %}"><h6>PUNTAJE</h6><b><h1> {{posteo.puntaje}}</b></h1></a>
+                {% else %}
+                <a class="btn btn-danger" href="{% url 'review_criteria' %}"><h6>PUNTAJE</h6><b><h1> {{posteo.puntaje}}</b></h1></a>
+                {% endif %}
+            </h1>
+            <h3 class="fw-bolder mb-1">{{posteo.subtitulo}}</h3>
+            <!-- Post meta content-->
+            <div class="text-muted fst-italic mb-2">Creado por:
+                <a class="badge bg-secondary text-decoration-none link-light" href="{% url 'usuario_detallado' posteo.user_id %}">{{posteo.user.get_full_name}}</a> el {{posteo.creado.day}}/{{posteo.creado.month}}/{{posteo.creado.year}}
+                {% if posteo.creado != posteo.actualizado %}
+                y editado el {{posteo.actualizado.day}}/{{posteo.actualizado.month}}/{{posteo.actualizado.year}}
+                {% endif %}
+            </div>
+            <img height="200px" src="{{ posteo.imagen.url }}" alt="">
+        </header>
+        <section class="mb-5">
+            {{posteo.contenido|slice:":200"|safe}}...
+            <br>
+            <a href="{% url 'posteo_detallado' posteo.id %}" class="btn btn-primary">Ver más &rarr;</a>
+        </section>
+    </article>
+
+    {% endfor %}
+
+{% else %}
+
+<p>Todavía no se han subido reviews.</p>
+
+{% endif %}
+
+{% endblock %}
